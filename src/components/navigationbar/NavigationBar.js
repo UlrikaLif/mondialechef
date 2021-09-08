@@ -3,10 +3,18 @@ import './NavigationBar.css'
 import logotype from "../../shared/images/logotype.svg"
 import { useHistory } from 'react-router-dom'
 import { UserContext } from "../../shared/global/provider/UserProvider"
+import { Profile } from "../profile/Profile"
 
 export const NavigationBar = () => {
     const history = useHistory()
     const [authenticatedUser, setAuthenicatedUser] = useContext(UserContext)
+
+    const displayUserIfAuthenticated = () => {
+        return (authenticatedUser) 
+            ? <div className="profile"><Profile /></div>
+            : <span onClick={() => history.push('/signin')}
+            className="signin">Sign in</span>
+    }
 
     return(
         <div className="navigationBarWrapper">
@@ -14,9 +22,8 @@ export const NavigationBar = () => {
                 className="logotype"
                 src={logotype} 
                 alt="Error..." />
-            <span onClick={() => history.push('/signin')}
-                className="signin">Sign in</span>
-            <h3> {authenticatedUser}</h3>
+            {displayUserIfAuthenticated()}    
+
         </div>
     )
 }
